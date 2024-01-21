@@ -1,2 +1,1 @@
-# app-folha-de-pagamentos-py
- Aplicação python para folha de pagamentos.
+Projeto de automatização de folha de pagamentos em python.
