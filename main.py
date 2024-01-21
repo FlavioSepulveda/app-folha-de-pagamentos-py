@@ -3,6 +3,9 @@ from tkinter import *
 from tkinter import ttk, messagebox
 import os
 import locale
+#importando as funções de calculo
+from metod import *
+
 # DEFININDO A LOCALIZAÇÃO
 locale.setlocale(locale.LC_ALL, 'pt_BR.UTF-8')
 
@@ -46,6 +49,33 @@ frameMenu.grid(row=3, column=0, sticky = NSEW)
 # Frame cima --------------------------------------------
 app_logo = Label(frameCima, text="Folha de pagamento", compound=LEFT, padx=5, anchor= NW, font=("Arial 20"), bg=corFundo1, fg=corFundo2)
 app_logo.place(x=10,y=20)
+
+#Funçoes ------------------------------------------------
+
+def calcular():
+    if e_salario.get() == '' or e_horas.get() == '':
+        messagebox.showerror("Erro: Insira os dados necessarios.")
+    # Obtendo salario bruto e horas extras do usuario.
+    salario_bruto = float(e_salario.get())
+    horas_extras = int(e_horas.get())
+
+    desconto_inss = calcular_inss(salario_bruto)
+
+    salario_liquido = salario_bruto - desconto_inss
+
+    desconto_irrf = calcular_irrf(salario_liquido)
+
+    provento_horas_extras = calcular_hora_extra(salario_bruto, horas_extras)
+
+    salario_final = salario_liquido + provento_horas_extras - desconto_irrf
+
+    # Exibindo os Resultados -
+    app_salario['text'] = locale.currency(salario_bruto, grouping=TRUE)
+    app_horasExtras['text'] = locale.currency(provento_horas_extras, grouping=TRUE)
+    app_INSS['text'] = locale.currency(desconto_inss, grouping=TRUE)
+    app_IRRF['text'] = locale.currency(desconto_irrf, grouping=TRUE)
+
+    app_salario_receber['text'] = locale.currency(salario_final, grouping=TRUE)
 
 # Frame meio --------------------------------------------
 app_label = Label(frameMeio_H, text="Dados do Trabalhador", compound=LEFT, padx=5, anchor= NW, font=("Arial 13"), bg=corFundo1, fg=cor0)
@@ -92,12 +122,12 @@ app_linha.place(x=100,y=20)
 
 l_salario = Label(frameBaixo_P, text="Salario Bruto: ", compound=LEFT, padx=5, anchor= NW, font=("Arial 10"), bg=corFundo1, fg=corLetras)
 l_salario.place(x=20,y=40)
-app_salario = Label(frameBaixo_P, text=locale.currency(5000, grouping=TRUE),  compound=LEFT, padx=5, anchor= NW, font=("Arial 10 bold"), bg=corFundo1, fg=corLetras)
+app_salario = Label(frameBaixo_P,  compound=LEFT, padx=5, anchor= NW, font=("Arial 10 bold"), bg=corFundo1, fg=corLetras)
 app_salario.place(x=150,y=40)
 
 l_horasExtras = Label(frameBaixo_P, text="Horas Extras: ", compound=LEFT, padx=5, anchor= NW, font=("Arial 10"), bg=corFundo1, fg=corLetras)
 l_horasExtras.place(x=20,y=60)
-app_horasExtras= Label(frameBaixo_P, text=locale.currency(00, grouping=TRUE),  compound=LEFT, padx=5, anchor= NW, font=("Arial 10 bold"), bg=corFundo1, fg=corLetras)
+app_horasExtras= Label(frameBaixo_P, compound=LEFT, padx=5, anchor= NW, font=("Arial 10 bold"), bg=corFundo1, fg=corLetras)
 app_horasExtras.place(x=150,y=60)
 
 # Frame de descontos -------------------------------------
@@ -111,12 +141,12 @@ app_linha.place(x=100,y=20)
 
 l_INSS = Label(frameBaixo_D, text="INSS: ", compound=LEFT, padx=5, anchor= NW, font=("Arial 10"), bg=corFundo1, fg=corLetras)
 l_INSS.place(x=20,y=40)
-app_INSS = Label(frameBaixo_D, text=locale.currency(5000, grouping=TRUE),  compound=LEFT, padx=5, anchor= NW, font=("Arial 10 bold"), bg=corFundo1, fg=corLetras)
+app_INSS = Label(frameBaixo_D,  compound=LEFT, padx=5, anchor= NW, font=("Arial 10 bold"), bg=corFundo1, fg=corLetras)
 app_INSS.place(x=150,y=40)
 
 l_IRRF = Label(frameBaixo_D, text="IRRF: ", compound=LEFT, padx=5, anchor= NW, font=("Arial 10"), bg=corFundo1, fg=corLetras)
 l_IRRF.place(x=20,y=60)
-app_IRRF = Label(frameBaixo_D, text=locale.currency(00, grouping=TRUE),  compound=LEFT, padx=5, anchor= NW, font=("Arial 10 bold"), bg=corFundo1, fg=corLetras)
+app_IRRF = Label(frameBaixo_D,  compound=LEFT, padx=5, anchor= NW, font=("Arial 10 bold"), bg=corFundo1, fg=corLetras)
 app_IRRF.place(x=150,y=60)
 
 l_IRRF = Label(frameBaixo_S, text="Liquido a receber: ", compound=LEFT, padx=5, anchor= NW, font=("Arial 12"), bg=corFundo1, fg=corLetras)
@@ -126,11 +156,11 @@ app_linha.place(x=160,y=18)
 app_linha = Label(frameBaixo_S, width=300,anchor= NW, font=("Verdana 1"), bg=corFundo1)
 app_linha.place(x=160,y=20)
 
-app_salario_receber = Label(frameBaixo_S, width=18, text=locale.currency(00, grouping=TRUE),  compound=LEFT, padx=5, anchor= E, font=("Arial 20 bold"), bg=corFundo1, fg=corLetras)
+app_salario_receber = Label(frameBaixo_S, width=18, text=locale.currency(00, grouping=TRUE), compound=LEFT, padx=5, anchor= E, font=("Arial 20 bold"), bg=corFundo1, fg=corLetras)
 app_salario_receber.place(x=150,y=40)
 
 # Menu --------------------------------------------
-b_folha_pagamento = Button(frameMenu, anchor=NW, text='Calcular Pagamento', bg=corLetras,fg=corFundo1, font=('Ivy 10 bold'), overrelief=RIDGE, relief=GROOVE)
+b_folha_pagamento = Button(frameMenu, command=calcular, anchor=NW, text='Calcular Pagamento', bg=corLetras,fg=corFundo1, font=('Ivy 10 bold'), overrelief=RIDGE, relief=GROOVE)
 b_folha_pagamento.grid(row=0, column=0, sticky=NSEW,padx=10, pady=6)
 
 b_folha_pagamento = Button(frameMenu, anchor=NW, text='Gerar PDF', bg=corLetras,fg=corFundo1, font=('Ivy 10 bold'), overrelief=RIDGE, relief=GROOVE)

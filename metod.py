@@ -31,7 +31,7 @@ def calcular_hora_extra(salario_bruto, horas_extras):
     adcional = valor_hora * 0.5
     return horas_extras * (valor_hora + adcional)
 
-salario_bruto = float(input("Insira o salario bruto do trabalhador:  R$"))
+'''salario_bruto = float(input("Insira o salario bruto do trabalhador:  R$"))
 horas_extras = int(input("Quantas horas extras trabalhadas no mês: "))
 
 desconto_inss = calcular_inss(salario_bruto)
@@ -50,4 +50,4 @@ print(f'Provento de Horas extras: R$ {provento_horas_extras:.2f}')
 print(f'Descontos e INSS: R$ {desconto_inss:.2f}')
 print(f'Descontos e IRRF: R$ {desconto_irrf:.2f}')
 print('------------------------------------------')
-print(f'Salario final: R$ {salario_final:.2f}')
+print(f'Salario final: R$ {salario_final:.2f}')'''
